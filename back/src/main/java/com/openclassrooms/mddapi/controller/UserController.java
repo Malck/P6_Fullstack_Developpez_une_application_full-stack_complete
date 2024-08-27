@@ -39,13 +39,11 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         UserDTO userDTO = userService.getUserById(id);
         if (userDTO == null) {
-            throw new UserNotFoundException("User not found with id: " + id); // Exception personnalisée
+            throw new UserNotFoundException("User not found with id: " + id); 
         } else {
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
     }
-
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
@@ -60,7 +58,7 @@ public class UserController {
         UserDTO userDTO = userService.getUserByName(username);
 
         if (userDTO == null) {
-            throw new UserNotFoundException("User not found with userName: " + username); // Exception personnalisée
+            throw new UserNotFoundException("User not found with userName: " + username); 
         } else {
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
