@@ -1,0 +1,58 @@
+.navigation-content {
+  display: flex;
+  flex-direction: row; 
+  align-items: center; 
+  box-sizing: border-box; 
+}
+
+.navigation-content > * {
+  font-size: 1.5em; 
+  padding: 32px; 
+  cursor: pointer; 
+}
+
+.navigation-content > *:last-child {
+  font-size: 3em; 
+  line-height: 30px;
+}
+
+.navigation-content a {
+  text-decoration: none; 
+  color: inherit; 
+}
+
+.navigation-content a:hover {
+  color: #673ab7; 
+  text-decoration: none; 
+  filter: brightness(1.5);
+}
+
+.navigation-content a:focus {
+  outline: none; 
+}
+
+.navigation-content .active-link {
+  color: #673ab7; 
+}
+
+/* Pour les écrans jusqu'à 500px */
+@media (max-width: 500px) {
+  .navigation-content {
+    flex-direction: column; 
+    align-items: flex-end; 
+    height: 100vh; 
+    overflow-y: auto; 
+    justify-content: flex-start; 
+    margin-bottom: 0px; 
+    padding-bottom: 0px;
+  }
+
+  .navigation-content > *:first-child {
+    margin-top: 100px; 
+  }
+
+  .navigation-content > *:last-child {
+    margin-top: auto; 
+    margin-right: 10px; 
+}
+}
