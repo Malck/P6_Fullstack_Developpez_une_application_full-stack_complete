@@ -1,0 +1,80 @@
+// Importer les variables de style présentes dans le fichier _variables.scss
+@import "../../../../styles/_variables.scss";
+
+/* Centre le titre et le formulaire */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto; 
+ 
+  /* Style pour le titre */
+  h2 {
+    margin-bottom: 2rem; 
+  }
+
+  /* Style pour le formulaire */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    width: 100%; 
+
+    mat-form-field {
+      width: 350px;
+    }
+
+    /* Centre le bouton S'inscrire */
+    .button-group {
+      display: flex;
+      justify-content: center;
+
+      button {
+        width: 150px; 
+        text-align: center; 
+      }
+    }
+  }
+}
+
+/* Lien de retour en page d'accueil - positionnement par défaut */
+.back-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: $back-arrow-font-size;
+  line-height: 18px;
+  z-index: 10;
+  padding: 20px; 
+  padding-top: 20px;
+  padding-left: 30px;
+  border-radius: 50%; 
+  transition: background-color 0.3s ease; 
+}
+/* Lorsque la largeur de l'écran est supérieure à 500px */
+@media (min-width: 501px) {
+  .back-icon {
+    top: $header-height + 1; 
+  }
+}
+
+/* Lorsque la largeur de l'écran est de 500px ou moins */
+@media (max-width: 500px) {
+  .back-icon {
+    top: 0; 
+  }
+}
+
+.error-message {
+  background-color: #f8d7da; 
+  border-color: #f5c6cb; 
+  color: #842029; 
+  padding: 5px; 
+  border-radius: 4px; 
+  margin-bottom: 10px; 
+  font-size: 0.9em; 
+  font-weight: bold; 
+  max-width: 400px; /* Largeur maximale pour que le message ne s'étende pas trop */
+  word-wrap: break-word; /* Permet de casser les mots longs pour ne pas dépasser la largeur maximale */
+}
