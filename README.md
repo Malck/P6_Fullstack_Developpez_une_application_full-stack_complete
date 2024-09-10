@@ -1,25 +1,19 @@
 # P6-Full-Stack-reseau-dev
 
-## Front
+## Installation de la base de données
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+1. Assurez-vous d'avoir une instance de la base de données (par exemple, MySQL) installée et configurée sur votre machine.
+2. Création de la base de données fourni dans le dossier `ressources/sql`.
+3. Renseignez les informations de connexion à la base de données dans le fichier de configuration `application.properties`.
 
-Don't forget to install your node_modules before starting (`npm install`).
+## Installation de l'application
 
-### Development server
+1. Avoir les dépendances nécessaires installées : Java, Node.js, Maven.
+2. Clonez ce dépôt sur votre machine locale.
+3. Accédez au répertoire du projet back-end et exécutez la commande `mvn clean install`.
+4. Accédez au répertoire du projet front-end et exécutez la commande `npm install`.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Lancement de l'application
 
-### Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-### Where to start
-
-As you may have seen if you already started the app, a simple home page containing a logo, a title and a button is available. If you take a look at its code (in the `home.component.html`) you will see that an external UI library is already configured in the project.
-
-This library is `@angular/material`, it's one of the most famous in the angular ecosystem. As you can see on their docs (https://material.angular.io/), it contains a lot of highly customizable components that will help you design your interfaces quickly.
-
-Note: I recommend to use material however it's not mandatory, if you prefer you can get ride of it.
-
-Good luck!
+1. Pour démarrer l'application front-end : aller dans le répertoire du projet frontet exécutez la commande `ng serve` .
+2. Pour démarrer l'application back-end : aller dans le répertoire du projet back et exécutez la commande `mvn spring-boot:run` .
