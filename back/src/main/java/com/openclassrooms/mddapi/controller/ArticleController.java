@@ -12,9 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/article")
@@ -52,10 +55,15 @@ public class ArticleController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createArticle(@RequestBody ArticleDTO articleDTO) {
-        if (articleDTO.getContent() == null || articleDTO.getContent().trim().isEmpty()) {
-            throw new InvalidArticleDataException("Invalid article data");
+    public ResponseEntity<String> createArticle(@Valid @RequestBody ArticleDTO articleDTO,Errors errors) { 
+        if(errors.hasErrors()){
+            
+        throw new InvalidArticleDataException("Invalid article data");
+                
         }
+        // if (articleDTO.getContent() == null || articleDTO.getContent().trim().isEmpty()) {
+        //     throw new InvalidArticleDataException("Invalid article data");
+        // }
 
         Article createdArticle = articleService.createArticle(articleDTO);
         if (createdArticle != null) {
