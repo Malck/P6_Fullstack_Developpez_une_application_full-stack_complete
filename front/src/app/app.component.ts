@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Observable, filter, interval, observable } from 'rxjs';
+import { filter } from 'rxjs';
+import { AuthService } from './core/services/auth.service';
+import { SessionService } from './core/services/session.service';
+import { User } from './core/models/User';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './auth/components/login/login.component';
 import { RegisterComponent } from './auth/components/register/register.component';
@@ -14,13 +17,22 @@ export class AppComponent implements OnInit {
   title = 'front';
 
   headerType!: HeaderType;
-  HeaderTypeEnum = HeaderType; // Ceci créera une référence à l'enum que nous pouvons utiliser dans le template
+  HeaderTypeEnum = HeaderType;
 
   showHeader = true;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService,
+    private sessionService: SessionService
+  ) {}
 
   ngOnInit() {
+    // Restaurer la session au démarrage de l'application
+    this.restoreSession();
+
+    // Gérer les événements de navigation pour mettre à jour l'en-tête
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -31,7 +43,6 @@ export class AppComponent implements OnInit {
           activeComponent === LoginComponent ||
           activeComponent === RegisterComponent
         ) {
-          // check if the component is the login component or the regi
           this.headerType = HeaderType.LoginHeader;
         } else {
           this.headerType = HeaderType.MddHeader;
@@ -39,10 +50,25 @@ export class AppComponent implements OnInit {
       });
   }
 
-  // tente de trouver le composant associé à la route donnée. Si la route n'a pas
-  // de composant (comme c'est le cas pour une route avec des routes enfants),
-  // elle tente de le trouver récursivement en parcourant les routes enfants.
-  getActiveComponent(route: ActivatedRoute): any {
+  // Fonction pour restaurer la session depuis le token
+  private restoreSession(): void {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.authService.getCurrentUser().subscribe(
+        (user: User) => {
+          this.sessionService.logIn(user, token); // Restaurer la session avec l'utilisateur et le token
+        },
+        (error) => {
+          // Gestion des erreurs si la restauration de l'utilisateur échoue
+          console.error('Failed to restore session', error);
+          this.sessionService.logOut(); // Déconnecter si l'utilisateur ne peut pas être récupéré
+        }
+      );
+    }
+  }
+
+  // Récupère le composant actif associé à la route donnée
+  private getActiveComponent(route: ActivatedRoute): any {
     if (route.routeConfig && route.routeConfig.component) {
       return route.routeConfig.component;
     } else if (route.firstChild) {

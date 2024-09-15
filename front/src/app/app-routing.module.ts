@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
+import { ErrorComponent } from './pages/error/error.component'; // Assurez-vous que le chemin est correct
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -12,8 +13,8 @@ const routes: Routes = [
     path: 'mdd',
     loadChildren: () => import('./mdd/mdd.module').then((m) => m.MddModule),
   },
-  //Redirection en cas d'URL incorrecte (404 Not Found)
-  { path: '**', redirectTo: '' },
+  // Route catch-all pour les chemins non définis
+  { path: '**', component: ErrorComponent },
 ];
 
 @NgModule({

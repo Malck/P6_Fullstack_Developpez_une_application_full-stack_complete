@@ -18,8 +18,8 @@ export class MeComponent implements OnInit, OnDestroy {
   profileForm!: FormGroup;
   subjects: MySubject[] = [];
   errorMessage: string | null = null;
+  message: string | null = null; // Message de succès
   currentUser!: User;
-  message: string | null = null;
 
   private unsubscribe$: Subject<boolean> = new Subject<boolean>();
 
@@ -33,52 +33,67 @@ export class MeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // Chargement des sujets non abonnés
     this.getUnsubscribedSubjects();
 
+    // Initialisation des informations utilisateur
     this.currentUser = this.sessionService.user;
 
+    // Création du formulaire avec les données de l'utilisateur actuel
     this.profileForm = this.formeBuilder.group({
-      username: [null, [Validators.required]],
-      email: [null, [Validators.required, Validators.email]],
+      username: [this.currentUser.username, [Validators.required]],
+      email: [this.currentUser.email, [Validators.required, Validators.email]],
     });
   }
 
+  // Méthode appelée lors de la sauvegarde des modifications du profil
   onSave() {
     if (this.profileForm.valid) {
-      console.log(this.profileForm.value);
       this.authService
         .updateUser(this.currentUser.id.toString(), this.profileForm.value)
         .pipe()
         .subscribe({
           next: (message) => {
-            this.handleSuccess('User updated successfully', message.token);
+            this.handleSuccess('Les modifications ont été prises en compte', message.token);
           },
           error: (error) => {
-            this.handleError('Failed to update user');
+            this.handleError('Échec de la mise à jour de l\'utilisateur');
           },
         });
     }
   }
 
+  // Méthode pour gérer le succès de la mise à jour du profil
   handleSuccess(message: string, token: string) {
     // Sauvegardez le token dans le localStorage
     localStorage.setItem('token', token);
-
-    // Affichez le message
-    console.log(message);
+  
+    // Affichez le message de succès
     this.message = message;
-
-    // mémoriser les nouvelles données de l'utilisateur
+  
+    // Mémoriser les nouvelles données de l'utilisateur
     this.authService.getCurrentUser().subscribe((user: User) => {
-      this.sessionService.logIn(user);
+      this.sessionService.logIn(user, token); // Passer le token ici
     });
+  
+    // Effacer le message après 5 secondes
+    setTimeout(() => {
+      this.message = null;
+    }, 5000); // 5000 millisecondes = 5 secondes
   }
 
+  // Méthode pour gérer les erreurs lors de la mise à jour du profil
   handleError(message: string) {
     console.error(message);
     this.errorMessage = message;
+  
+    // Effacer le message après 5 secondes
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 5000); // 5000 millisecondes = 5 secondes
   }
 
+  // Méthode pour obtenir les sujets non abonnés
   getUnsubscribedSubjects(): void {
     this.subjectService
       .getSubjects()
@@ -87,11 +102,10 @@ export class MeComponent implements OnInit, OnDestroy {
         tap({
           next: (subjects) => {
             this.subjects = subjects;
-            console.log(subjects);
           },
           error: (error) => {
             console.error(error);
-            this.errorMessage = 'Error fetching subjects';
+            this.errorMessage = 'Erreur lors du chargement des sujets';
           },
         }),
         takeUntil(this.unsubscribe$)
@@ -99,6 +113,7 @@ export class MeComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  // Méthode pour gérer l'abonnement/désabonnement aux sujets
   onSubscribeSubject(subject: MySubject) {
     if (!subject) return; // S'assurer que le sujet existe
 
@@ -119,6 +134,7 @@ export class MeComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Méthode pour se déconnecter et rediriger vers la page d'accueil
   onLogoutClick() {
     this.sessionService.logOut();
 
@@ -127,9 +143,8 @@ export class MeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // Nettoyer les abonnements pour éviter les fuites de mémoire
     this.unsubscribe$.next(true);
-
-    // Unsubscribe from the subjectService
     this.unsubscribe$.unsubscribe();
   }
 }

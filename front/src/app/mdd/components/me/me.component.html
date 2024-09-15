@@ -1,6 +1,12 @@
 <!-- Profil utilisateur -->
 <div class="profile-container">
   <mat-card-title>Profil utilisateur</mat-card-title>
+
+  <!-- Message de succès -->
+  <div *ngIf="message" class="success-message">
+    {{ message }}
+  </div>
+
   <form [formGroup]="profileForm" (ngSubmit)="onSave()" class="profile-form">
     <mat-card-content class="profile-form">
       <mat-form-field appearance="outline" class="profile-field">
@@ -8,7 +14,6 @@
         <input
           matInput
           placeholder="Modifiez votre username"
-          [(ngModel)]="currentUser.username"
           formControlName="username"
         />
       </mat-form-field>
@@ -19,7 +24,6 @@
           matInput
           type="email"
           placeholder="Modifiez votre e-mail"
-          [(ngModel)]="currentUser.email"
           formControlName="email"
         />
       </mat-form-field>
@@ -52,6 +56,20 @@
   <p>Loading...</p>
 </ng-template>
 
+<!-- Message d'erreur -->
 <div *ngIf="errorMessage" class="error-message">
   {{ errorMessage }}
 </div>
+
+<!-- Styles -->
+<style>
+.success-message {
+  color: #4caf50; /* Green color for success */
+  margin-bottom: 16px;
+}
+
+.error-message {
+  color: #f44336; /* Red color for errors */
+  margin-top: 16px;
+}
+</style>

@@ -7,9 +7,10 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { CoreModule } from './core/core.module';
 import { MaterialModule } from './shared/material.module';
+import { ErrorComponent } from './pages/error/error.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, ErrorComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { SessionService } from '../services/session.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -9,11 +10,24 @@ import { SessionService } from '../services/session.service';
 export class AuthGuard implements CanActivate {
   constructor(private sessionService: SessionService, private router: Router) {}
 
-  canActivate(): boolean {
-    if (!this.sessionService.isLogged) {
-      this.router.navigate(['login']);
-      return false;
+  canActivate(): Observable<boolean> {
+    const token = localStorage.getItem('token');  // Vérifier si le token existe dans le localStorage
+
+    if (token && !this.sessionService.isLogged) {
+      // Restaurer la session à partir du token
+      this.sessionService.restoreSessionFromToken(token);
     }
-    return true;
+
+    return this.sessionService.getIsLoggedObservable().pipe(
+      map((isLogged) => {
+        if (!isLogged) {
+          this.router.navigate(['login']);
+          return false;
+        }
+        return true;
+      })
+    );
   }
 }
+
+
