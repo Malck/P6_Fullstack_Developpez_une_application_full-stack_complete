@@ -1,17 +1,16 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.dto.CommentDTO;
-import com.openclassrooms.mddapi.exception.CommentNotFoundException;
-import com.openclassrooms.mddapi.exception.InvalidCommentDataException;
-import com.openclassrooms.mddapi.exception.UpdateCommentException;
-import com.openclassrooms.mddapi.exception.DeleteCommentException;
+import com.openclassrooms.mddapi.exception.*;
 import com.openclassrooms.mddapi.model.Comment;
 import com.openclassrooms.mddapi.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,11 +41,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> createComment(@RequestBody CommentDTO commentDTO) {
-        if (commentDTO.getContent() == null || commentDTO.getContent().trim().isEmpty()) {
-            throw new InvalidCommentDataException("Invalid comment data");
-        }
-
+    public ResponseEntity<Map<String, String>> createComment(@Valid @RequestBody CommentDTO commentDTO) {
         Comment createdComment = commentService.createComment(commentDTO);
         Map<String, String> response = new HashMap<>();
 
@@ -60,14 +55,10 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateComment(@PathVariable Long id, @RequestBody CommentDTO commentDTO) {
-        if (commentDTO.getContent() == null || commentDTO.getContent().trim().isEmpty()) {
-            throw new InvalidCommentDataException("Invalid comment data");
-        }
-
+    public ResponseEntity<String> updateComment(@PathVariable Long id, @Valid @RequestBody CommentDTO commentDTO) {
         CommentDTO existingComment = commentService.getCommentById(id);
         if (existingComment == null) {
-            throw new CommentNotFoundException("Comment with ID " + id + " not found"); // 404: not found
+            throw new CommentNotFoundException("Comment with ID " + id + " not found");
         }
 
         Comment updatedComment = commentService.updateComment(id, commentDTO);
@@ -82,7 +73,7 @@ public class CommentController {
     public ResponseEntity<String> deleteCommentById(@PathVariable Long id) {
         CommentDTO commentDTO = commentService.getCommentById(id);
         if (commentDTO == null) {
-            throw new CommentNotFoundException("Comment with ID " + id + " not found"); // 404: not found
+            throw new CommentNotFoundException("Comment with ID " + id + " not found");
         }
 
         try {

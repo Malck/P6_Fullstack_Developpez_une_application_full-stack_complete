@@ -12,12 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/article")
@@ -34,14 +33,12 @@ public class ArticleController {
 
     @GetMapping
     public List<ArticleDTO> subscribedArticles() {
-
         // Récupérer l'utilisateur actuellement connecté
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         UserDTO userDTO = userService.getUserByName(username);
 
-        List<ArticleDTO> subscribedArticles =  articleService.getSubscribedArticlesForUser(userDTO.getId());
-
+        List<ArticleDTO> subscribedArticles = articleService.getSubscribedArticlesForUser(userDTO.getId());
         return subscribedArticles;
     }
 
@@ -55,16 +52,7 @@ public class ArticleController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createArticle(@Valid @RequestBody ArticleDTO articleDTO,Errors errors) { 
-        if(errors.hasErrors()){
-            
-        throw new InvalidArticleDataException("Invalid article data");
-                
-        }
-        // if (articleDTO.getContent() == null || articleDTO.getContent().trim().isEmpty()) {
-        //     throw new InvalidArticleDataException("Invalid article data");
-        // }
-
+    public ResponseEntity<String> createArticle(@Valid @RequestBody ArticleDTO articleDTO) {
         Article createdArticle = articleService.createArticle(articleDTO);
         if (createdArticle != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body("New Article created");
@@ -74,14 +62,10 @@ public class ArticleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateArticle(@PathVariable Long id, @RequestBody ArticleDTO articleDTO) {
-        if (articleDTO.getContent() == null || articleDTO.getContent().trim().isEmpty()) {
-            throw new InvalidArticleDataException("Invalid article data");
-        }
-
+    public ResponseEntity<String> updateArticle(@PathVariable Long id, @Valid @RequestBody ArticleDTO articleDTO) {
         ArticleWithCommentsDTO existingArticle = articleService.getArticleById(id);
         if (existingArticle == null) {
-            throw new ArticleNotFoundException("Article with ID " + id + " not found"); // 404: not found
+            throw new ArticleNotFoundException("Article with ID " + id + " not found");
         }
 
         Article updatedArticle = articleService.updateArticle(id, articleDTO);
@@ -96,7 +80,7 @@ public class ArticleController {
     public ResponseEntity<String> deleteArticleById(@PathVariable Long id) {
         ArticleWithCommentsDTO articleWithCommentsDTO = articleService.getArticleById(id);
         if (articleWithCommentsDTO == null) {
-            throw new ArticleNotFoundException("Article with ID " + id + " not found"); // 404: not found
+            throw new ArticleNotFoundException("Article with ID " + id + " not found");
         }
 
         try {

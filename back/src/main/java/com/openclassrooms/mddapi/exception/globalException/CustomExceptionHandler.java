@@ -2,27 +2,26 @@ package com.openclassrooms.mddapi.exception.globalException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.openclassrooms.mddapi.exception.ArticleNotFoundException;
-import com.openclassrooms.mddapi.exception.CommentNotFoundException;
-import com.openclassrooms.mddapi.exception.DeleteArticleException;
-import com.openclassrooms.mddapi.exception.DeleteCommentException;
-import com.openclassrooms.mddapi.exception.DeleteSubjectException;
-import com.openclassrooms.mddapi.exception.InvalidArticleDataException;
-import com.openclassrooms.mddapi.exception.InvalidCommentDataException;
-import com.openclassrooms.mddapi.exception.InvalidSubjectDataException;
-import com.openclassrooms.mddapi.exception.SubjectAlreadyExistsException;
-import com.openclassrooms.mddapi.exception.SubjectNotFoundException;
-import com.openclassrooms.mddapi.exception.UpdateArticleException;
-import com.openclassrooms.mddapi.exception.UpdateCommentException;
-import com.openclassrooms.mddapi.exception.UpdateSubjectException;
-import com.openclassrooms.mddapi.exception.UserAlreadyExistsException;
-import com.openclassrooms.mddapi.exception.UserNotFoundException;
+import com.openclassrooms.mddapi.exception.*;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult().getAllErrors().stream()
+                .map(error -> error.getDefaultMessage())
+                .reduce((message1, message2) -> message1 + ", " + message2)
+                .orElse("Validation error");
+        
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
@@ -76,12 +75,12 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(InvalidArticleDataException.class)
     public ResponseEntity<String> handleInvalidArticleDataException(InvalidArticleDataException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CommentNotFoundException.class)
     public ResponseEntity<String> handleCommentNotFoundException(CommentNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DeleteCommentException.class)
@@ -91,7 +90,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(InvalidCommentDataException.class)
     public ResponseEntity<String> handleInvalidCommentDataException(InvalidCommentDataException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UpdateCommentException.class)
