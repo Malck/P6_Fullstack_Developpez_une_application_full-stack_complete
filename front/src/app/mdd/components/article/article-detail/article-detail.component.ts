@@ -26,7 +26,7 @@ export class ArticleDetailComponent implements OnInit {
     if (this.articleId != null) {
       this.article$ = this.articleService.getArticleById(this.articleId);
     } else {
-      console.log('articleId is null');
+      //console.log('articleId is null');
     }
   }
 
@@ -36,7 +36,7 @@ export class ArticleDetailComponent implements OnInit {
   }
 
   handleSuccess(message: string) {
-    console.log(message);
+    //console.log(message);
     this.message = message;
   }
 

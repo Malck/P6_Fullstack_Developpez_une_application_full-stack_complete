@@ -66,19 +66,19 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   handleSuccess(message: string, token: string) {
     // Sauvegardez le token dans le localStorage
     localStorage.setItem('token', token);
-
+  
     // Affichez le message
-    console.log(message);
+    //console.log(message);
     this.message = message;
-
+  
     // mémoriser l'utilisateur
     this.auth.getCurrentUser().subscribe((user: User) => {
-      this.session.logIn(user);
-
+      this.session.logIn(user, token);  // Passer le token ici
       // Redirigez vers la page désirée
       this.router.navigateByUrl('/mdd/article');
     });
   }
+  
 
   handleError(message: string) {
     console.error(message);

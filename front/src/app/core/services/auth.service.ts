@@ -20,7 +20,7 @@ export class AuthService {
   ) {}
 
   public register(formValue: { name: string }): Observable<Token> {
-    console.log('ça envoie ce qui suit: ' + formValue.name);
+    //console.log('register : ' + formValue.name);
 
     return this.http.post<Token>(`${this.baseUrl}/auth/register`, formValue);
   }
