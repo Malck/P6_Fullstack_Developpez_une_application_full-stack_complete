@@ -37,7 +37,7 @@ export class SubjectsComponent implements OnInit, OnDestroy {
         tap({
           next: (subjects) => {
             this.subjects = subjects;
-            console.log(subjects);
+            //console.log(subjects);
           },
           error: (error) => {
             console.error(error);
@@ -55,7 +55,7 @@ export class SubjectsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (message) => {
-          console.log(message); // "Subject delete successfully"
+          //console.log(message); // "Subject delete successfully"
           this.getSubjects();
         },
         error: (error) => {

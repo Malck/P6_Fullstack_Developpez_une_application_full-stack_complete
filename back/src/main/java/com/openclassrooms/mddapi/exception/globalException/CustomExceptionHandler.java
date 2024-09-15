@@ -1,9 +1,25 @@
-package com.openclassrooms.mddapi.exception;
+package com.openclassrooms.mddapi.exception.globalException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.openclassrooms.mddapi.exception.ArticleNotFoundException;
+import com.openclassrooms.mddapi.exception.CommentNotFoundException;
+import com.openclassrooms.mddapi.exception.DeleteArticleException;
+import com.openclassrooms.mddapi.exception.DeleteCommentException;
+import com.openclassrooms.mddapi.exception.DeleteSubjectException;
+import com.openclassrooms.mddapi.exception.InvalidArticleDataException;
+import com.openclassrooms.mddapi.exception.InvalidCommentDataException;
+import com.openclassrooms.mddapi.exception.InvalidSubjectDataException;
+import com.openclassrooms.mddapi.exception.SubjectAlreadyExistsException;
+import com.openclassrooms.mddapi.exception.SubjectNotFoundException;
+import com.openclassrooms.mddapi.exception.UpdateArticleException;
+import com.openclassrooms.mddapi.exception.UpdateCommentException;
+import com.openclassrooms.mddapi.exception.UpdateSubjectException;
+import com.openclassrooms.mddapi.exception.UserAlreadyExistsException;
+import com.openclassrooms.mddapi.exception.UserNotFoundException;
 
 @ControllerAdvice
 public class CustomExceptionHandler {

@@ -28,7 +28,7 @@ export class ArticleformComponent implements OnInit {
     this.subjectService.getSubjects().subscribe({
       next: (subjects) => {
         this.themes = subjects;
-        console.log('Themes loaded:', this.themes); 
+        //console.log('Themes loaded:', this.themes); 
       },
       error: (error) => {
         console.error('Failed to load subjects', error);
@@ -37,7 +37,7 @@ export class ArticleformComponent implements OnInit {
   }
 
   handleSuccess(message: string) {
-    console.log(message);
+    //console.log(message);
     this.message = message;
     this.router.navigateByUrl('/mdd/article');
   }

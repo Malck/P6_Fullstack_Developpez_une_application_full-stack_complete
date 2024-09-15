@@ -16,7 +16,7 @@ export class CommentsComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    console.log('CommentsComponent.ngOnInit()');
+    //console.log('CommentsComponent.ngOnInit()');
 
     this.commentCtrl = this.formBuilder.control('', [
       Validators.required,
