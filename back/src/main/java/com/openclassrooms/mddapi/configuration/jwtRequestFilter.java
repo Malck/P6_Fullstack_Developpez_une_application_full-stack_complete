@@ -17,12 +17,12 @@ import java.io.IOException;
 import com.openclassrooms.mddapi.service.JwtUserDetailsService;
 @Component
 
-public class jwtRequestFilter extends OncePerRequestFilter {
+public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUserDetailsService jwtUserDetailsService;
     @Autowired
-    private jwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwtTokenUtil;
 
     // filtre d'inspection des requêtes HTTP afin d'en extraire le token JWT, de le valider et de charger les détails de l'utilisateur associé
     @Override

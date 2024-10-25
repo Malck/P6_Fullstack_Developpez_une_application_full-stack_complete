@@ -72,8 +72,8 @@ public class SecurityConfig {
 
 
     @Bean
-    public jwtRequestFilter jwtFilter() {
-        return new jwtRequestFilter(); // Instancie un nouvel objet de type jwtRequestFilter
+    public JwtRequestFilter jwtFilter() {
+        return new JwtRequestFilter(); // Instancie un nouvel objet de type jwtRequestFilter
     }
 
     // Définit un bean pour l'encodeur de mot de passe (injecté dans JwtUserDetailsService pour encoder les mots de passe avant de les stocker dans la base de données.)

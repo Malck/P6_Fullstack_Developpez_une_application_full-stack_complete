@@ -25,7 +25,7 @@ export class ArticlesService {
     return this.http.get<ArticleWithComments>(`${this.baseUrl}/article/${id}`);
   }
 
-  addNewComment(articleCommnted: {
+  addNewComment(articleCommented: {
     comment: string;
     articleId: number;
   }): Observable<string> {
@@ -33,8 +33,8 @@ export class ArticlesService {
     const commentPayload = {
       userId: userId,
       authorName: null,
-      articleId: articleCommnted.articleId,
-      content: articleCommnted.comment,
+      articleId: articleCommented.articleId,
+      content: articleCommented.comment,
       createdAt: null,
     };
 

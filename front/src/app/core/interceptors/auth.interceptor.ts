@@ -13,16 +13,15 @@ import { AuthService } from '../services/auth.service';
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private auth: AuthService) {}
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept<T>(req: HttpRequest<T>, next: HttpHandler): Observable<HttpEvent<T>> {
+    const token = localStorage.getItem('token');
     const headers = new HttpHeaders().append(
       'Authorization',
-      'Bearer ' + localStorage.getItem('token')
+      'Bearer ' + token
     );
-    const modifiedReq = req.clone({ headers }); // on clone la requête et on lui ajoute le header Authorization
 
+    const modifiedReq = req.clone({ headers });
+    
     return next.handle(modifiedReq);
   }
-}
+}  

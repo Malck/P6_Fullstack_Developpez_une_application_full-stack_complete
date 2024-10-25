@@ -12,7 +12,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 
 @Component
-public class jwtTokenUtil implements Serializable {
+public class JwtTokenUtil implements Serializable {
 
     @Value("${jwt.secret}")
     private String jwtSecret;

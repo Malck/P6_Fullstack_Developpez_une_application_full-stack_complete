@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Type } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
@@ -7,6 +7,8 @@ import { User } from './core/models/User';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './auth/components/login/login.component';
 import { RegisterComponent } from './auth/components/register/register.component';
+
+type AppComponents = HomeComponent | LoginComponent | RegisterComponent;
 
 @Component({
   selector: 'app-root',
@@ -27,6 +29,7 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private sessionService: SessionService
   ) {}
+  
 
   ngOnInit() {
     // Restaurer la session au démarrage de l'application
@@ -68,14 +71,15 @@ export class AppComponent implements OnInit {
   }
 
   // Récupère le composant actif associé à la route donnée
-  private getActiveComponent(route: ActivatedRoute): any {
-    if (route.routeConfig && route.routeConfig.component) {
-      return route.routeConfig.component;
-    } else if (route.firstChild) {
-      return this.getActiveComponent(route.firstChild);
-    }
-    return null;
+  private getActiveComponent(route: ActivatedRoute): Type<AppComponents> | null {
+  if (route.routeConfig && route.routeConfig.component) {
+    return route.routeConfig.component as Type<AppComponents>;
+  } else if (route.firstChild) {
+    return this.getActiveComponent(route.firstChild);
   }
+  return null;
+}
+  
 }
 
 export enum HeaderType {

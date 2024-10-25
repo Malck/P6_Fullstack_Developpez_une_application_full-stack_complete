@@ -1,21 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ArticlesService } from '../../../services/articles.service';
 import { Router } from '@angular/router';
 import { Subject as MySubject } from '../../../../core/models/Subject';
 import { SubjectService } from 'src/app/core/services/subject.service';
 import { SessionService } from 'src/app/core/services/session.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-articleform',
   templateUrl: './articleform.component.html',
   styleUrls: ['./articleform.component.scss'],
 })
-export class ArticleformComponent implements OnInit {
-  themes: MySubject[] = []; // Remplacez MyTheme par le type de votre modèle de thème si différent
-  selectedTheme!: string; // Pour stocker le thème sélectionné
+export class ArticleformComponent implements OnInit, OnDestroy {
+  themes: MySubject[] = [];
+  selectedTheme!: string;
   message: string | null = null;
   errorMessage: string | null = null;
+
+  private unsubscribe$ = new Subject<void>(); // Subject pour désabonnement
 
   constructor(
     private articleService: ArticlesService,
@@ -25,19 +28,19 @@ export class ArticleformComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.subjectService.getSubjects().subscribe({
-      next: (subjects) => {
-        this.themes = subjects;
-        //console.log('Themes loaded:', this.themes); 
-      },
-      error: (error) => {
-        console.error('Failed to load subjects', error);
-      },
-    });
+    this.subjectService.getSubjects()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (subjects) => {
+          this.themes = subjects;
+        },
+        error: (error) => {
+          console.error('Failed to load subjects', error);
+        },
+      });
   }
 
   handleSuccess(message: string) {
-    //console.log(message);
     this.message = message;
     this.router.navigateByUrl('/mdd/article');
   }
@@ -56,14 +59,21 @@ export class ArticleformComponent implements OnInit {
         content: form.value.content,
       };
 
-      this.articleService.createArticle(articleData).subscribe({
-        next: (message) => {
-          this.handleSuccess('Article created successfully');
-        },
-        error: (error) => {
-          this.handleError('Failed to create Article');
-        },
-      });
+      this.articleService.createArticle(articleData)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe({
+          next: (message) => {
+            this.handleSuccess('Article created successfully');
+          },
+          error: () => {
+            this.handleError('Failed to create Article');
+          },
+        });
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next(); // Notifier les abonnements de se désabonner
+    this.unsubscribe$.complete(); // Compléter le Subject
   }
 }
