@@ -13,6 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Contrôleur pour la gestion des utilisateurs.
+ */
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -24,6 +27,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Crée un nouvel utilisateur.
+     *
+     * @param userDTO données de l'utilisateur à créer.
+     * @return message confirmant la création de l'utilisateur ou un message d'erreur.
+     */
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
         UserDTO createdUserDTO = userService.createUser(userDTO.getEmail(), userDTO.getUsername(), userDTO.getPassword());
@@ -35,6 +44,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Récupère un utilisateur par son identifiant.
+     *
+     * @param id identifiant de l'utilisateur.
+     * @return l'utilisateur correspondant ou une exception s'il n'est pas trouvé.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         UserDTO userDTO = userService.getUserById(id);
@@ -45,12 +60,23 @@ public class UserController {
         }
     }
 
+    /**
+     * Supprime un utilisateur par son identifiant.
+     *
+     * @param id identifiant de l'utilisateur.
+     * @return réponse sans contenu après suppression.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Récupère l'utilisateur actuellement connecté.
+     *
+     * @return les informations de l'utilisateur connecté ou une exception s'il n'est pas trouvé.
+     */
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Contrôleur pour la gestion des commentaires.
+ */
 @RestController
 @RequestMapping("/api/comment")
 public class CommentController {
@@ -26,11 +29,22 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    /**
+     * Récupère tous les commentaires.
+     *
+     * @return liste des commentaires.
+     */
     @GetMapping
     public List<CommentDTO> getAllComments() {
         return commentService.getAllComments();
     }
 
+    /**
+     * Récupère un commentaire par son identifiant.
+     *
+     * @param id identifiant du commentaire.
+     * @return le commentaire correspondant ou une erreur si introuvable.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<CommentDTO> getCommentById(@PathVariable Long id) {
         CommentDTO commentDTO = commentService.getCommentById(id);
@@ -40,6 +54,12 @@ public class CommentController {
         return ResponseEntity.ok(commentDTO);
     }
 
+    /**
+     * Crée un nouveau commentaire.
+     *
+     * @param commentDTO données du commentaire à créer.
+     * @return message de succès ou d'échec.
+     */
     @PostMapping
     public ResponseEntity<Map<String, String>> createComment(@Valid @RequestBody CommentDTO commentDTO) {
         Comment createdComment = commentService.createComment(commentDTO);
@@ -54,6 +74,13 @@ public class CommentController {
         }
     }
 
+    /**
+     * Met à jour un commentaire existant.
+     *
+     * @param id identifiant du commentaire.
+     * @param commentDTO nouvelles données du commentaire.
+     * @return message de succès ou une erreur si introuvable.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<String> updateComment(@PathVariable Long id, @Valid @RequestBody CommentDTO commentDTO) {
         CommentDTO existingComment = commentService.getCommentById(id);
@@ -69,6 +96,12 @@ public class CommentController {
         }
     }
 
+    /**
+     * Supprime un commentaire par son identifiant.
+     *
+     * @param id identifiant du commentaire.
+     * @return message de confirmation de suppression ou une erreur si introuvable.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCommentById(@PathVariable Long id) {
         CommentDTO commentDTO = commentService.getCommentById(id);
@@ -84,3 +117,4 @@ public class CommentController {
         }
     }
 }
+

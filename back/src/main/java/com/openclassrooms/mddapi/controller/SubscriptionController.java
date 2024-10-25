@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Contrôleur pour la gestion des abonnements des utilisateurs aux sujets.
+ */
 @RestController
 @RequestMapping("/api/subscription")
 public class SubscriptionController {
@@ -20,12 +23,25 @@ public class SubscriptionController {
         this.subscriptionService = subscriptionService;
     }
 
+    /**
+     * Vérifie si un utilisateur est abonné à un sujet.
+     *
+     * @param subjectId identifiant du sujet.
+     * @param userId    identifiant de l'utilisateur.
+     * @return {@code true} si l'utilisateur est abonné, {@code false} sinon.
+     */
     @GetMapping("/{subjectId}/{userId}")
     public ResponseEntity<Boolean> isSubscribed(@PathVariable Long subjectId, @PathVariable Long userId) {
         boolean isSubscribed = subscriptionService.isSubscribed(subjectId, userId);
         return ResponseEntity.ok(isSubscribed);
     }
 
+    /**
+     * Abonne un utilisateur à un sujet.
+     *
+     * @param request carte contenant les identifiants du sujet et de l'utilisateur.
+     * @return message confirmant l'abonnement.
+     */
     @PostMapping("/subscribe")
     public ResponseEntity<Map<String, String>> subscribeToSubject(@RequestBody Map<String, Long> request) {
         Long subjectId = request.get("subjectId");
@@ -36,6 +52,13 @@ public class SubscriptionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    /**
+     * Désabonne un utilisateur d'un sujet.
+     *
+     * @param subjectId identifiant du sujet.
+     * @param userId    identifiant de l'utilisateur.
+     * @return message confirmant le désabonnement.
+     */
     @DeleteMapping("/unsubscribe/{subjectId}/{userId}")
     public ResponseEntity<Map<String, String>> unsubscribeSubject(@PathVariable Long subjectId, @PathVariable Long userId) {
         subscriptionService.unsubscribeSubject(subjectId, userId);
@@ -43,6 +66,6 @@ public class SubscriptionController {
         response.put("message", "Unsubscribed successfully");
 
         return ResponseEntity.ok(response);
-
     }
 }
+

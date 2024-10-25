@@ -18,9 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Contrôleur pour gérer les opérations CRUD d'articles dans l'application.
+ */
 @RestController
 @RequestMapping("/api/article")
 public class ArticleController {
+    
     private final ArticleService articleService;
 
     @Autowired
@@ -30,10 +34,14 @@ public class ArticleController {
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
-
+    
+    /**
+     * Récupère les articles auxquels l'utilisateur connecté est abonné.
+     *
+     * @return Liste des articles sous forme de DTO.
+     */
     @GetMapping
     public List<ArticleDTO> subscribedArticles() {
-        // Récupérer l'utilisateur actuellement connecté
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         UserDTO userDTO = userService.getUserByName(username);
@@ -42,6 +50,13 @@ public class ArticleController {
         return subscribedArticles;
     }
 
+    /**
+     * Récupère un article spécifique avec ses commentaires par son ID.
+     *
+     * @param id L'ID de l'article à récupérer.
+     * @return L'article avec ses commentaires sous forme de DTO.
+     * @throws ArticleNotFoundException Si aucun article n'est trouvé avec l'ID donné.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ArticleWithCommentsDTO> getArticleById(@PathVariable Long id) {
         ArticleWithCommentsDTO articleWithCommentsDTO = articleService.getArticleById(id);
@@ -51,6 +66,12 @@ public class ArticleController {
         return ResponseEntity.ok(articleWithCommentsDTO);
     }
 
+    /**
+     * Crée un nouvel article.
+     *
+     * @param articleDTO Les détails de l'article à créer.
+     * @return Un message de confirmation de la création de l'article.
+     */
     @PostMapping
     public ResponseEntity<String> createArticle(@Valid @RequestBody ArticleDTO articleDTO) {
         Article createdArticle = articleService.createArticle(articleDTO);
@@ -61,6 +82,15 @@ public class ArticleController {
         }
     }
 
+    /**
+     * Met à jour un article existant.
+     *
+     * @param id L'ID de l'article à mettre à jour.
+     * @param articleDTO Les détails mis à jour de l'article.
+     * @return Un message de confirmation de la mise à jour de l'article.
+     * @throws ArticleNotFoundException Si l'article à mettre à jour n'est pas trouvé.
+     * @throws UpdateArticleException Si la mise à jour échoue.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<String> updateArticle(@PathVariable Long id, @Valid @RequestBody ArticleDTO articleDTO) {
         ArticleWithCommentsDTO existingArticle = articleService.getArticleById(id);
@@ -76,6 +106,14 @@ public class ArticleController {
         }
     }
 
+    /**
+     * Supprime un article par son ID.
+     *
+     * @param id L'ID de l'article à supprimer.
+     * @return Un message de confirmation de la suppression de l'article.
+     * @throws ArticleNotFoundException Si aucun article n'est trouvé avec l'ID donné.
+     * @throws DeleteArticleException Si la suppression échoue.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteArticleById(@PathVariable Long id) {
         ArticleWithCommentsDTO articleWithCommentsDTO = articleService.getArticleById(id);
