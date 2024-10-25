@@ -21,14 +21,13 @@ public class JwtUserDetailsService implements UserDetailsService {
     private PasswordEncoder bcryptEncoder;
 
     public CustomUserDetails loadUserByLogin(String login) throws UsernameNotFoundException {
-        // on veut que l'utilisateur puisse se connecter
-        // on essait d'abord avec l'email
+        // Essai de connexion avec l'email
         Optional<User> userByEmail = userRepository.findByEmail(login);
         if (userByEmail.isPresent()) {
             return new CustomUserDetails(userByEmail.get());
         }
 
-        // on essait avec le userName
+        // Essai de connexion avec le username
         Optional<User> userByUsername = userRepository.findByUsername(login);
         if (userByUsername.isPresent()) {
             return new CustomUserDetails(userByUsername.get());
@@ -37,13 +36,13 @@ public class JwtUserDetailsService implements UserDetailsService {
         throw new UsernameNotFoundException("User not found with login: " + login);
     }
 
-    // méthode utilisé par l'authenticationManager
+    // Méthode utilisée par l'AuthenticationManager
     @Override
-    public CustomUserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        return loadUserByLogin(userName);
+    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return loadUserByLogin(username);
     }
 
-    // méthode utilisé pour encoder le password d'un nouvel utilisateur
+    // Méthode utilisée pour encoder le password d'un nouvel utilisateur
     public User save(User user) {
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
         return userRepository.save(user);
