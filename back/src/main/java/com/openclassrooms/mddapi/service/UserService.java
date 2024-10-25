@@ -3,10 +3,11 @@ package com.openclassrooms.mddapi.service;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.dto.UserDTO;
 import com.openclassrooms.mddapi.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.openclassrooms.mddapi.exception.UserAlreadyExistsException;
 import com.openclassrooms.mddapi.exception.UserNotFoundException;
+import com.openclassrooms.mddapi.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -31,18 +32,17 @@ public class UserService {
 
         User user = User.createNewUser(email, username, password);
         User savedUser = userRepository.save(user);
-        return toDTO(savedUser);
+        return UserMapper.toDTO(savedUser);  // Utilisation du mapper
     }
-
 
     public UserDTO getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        return user.map(this::toDTO).orElse(null);
+        return user.map(UserMapper::toDTO).orElse(null);  // Utilisation du mapper
     }
 
-    public UserDTO getUserByName(String name) {
-        Optional<User> user = userRepository.findByUsername(name);
-        return user.map(this::toDTO).orElse(null);
+    public UserDTO getUserByName(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user.map(UserMapper::toDTO).orElse(null);  // Utilisation du mapper
     }
 
     public UserDTO updateUser(Long id, String email, String username) {
@@ -55,17 +55,10 @@ public class UserService {
         user.setEmail(email);
         user.setUsername(username);
         userRepository.save(user);
-        return toDTO(user);
+        return UserMapper.toDTO(user);  // Utilisation du mapper
     }
-
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-
-    private UserDTO toDTO(User user) {
-        return new UserDTO(user.getId(),user.getEmail(), user.getUsername(), user.getPassword());
-    }
-
-
 }
