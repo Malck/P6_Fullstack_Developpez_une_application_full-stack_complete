@@ -23,7 +23,7 @@
       padding-top: 8vh; // Encore plus haut pour les écrans de moins de 600px de large.
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 750px) {
       padding-top: 3vh; // Encore plus haut pour les très petits écrans.
     }
 
@@ -43,7 +43,7 @@
       padding-top: 7vh; // Encore plus haut pour les écrans de moins de 600px de large.
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 750px) {
       padding-top: 10vh; // Encore plus haut pour les très petits écrans.
       flex-direction: column; // Les boutons sont organisés en colonne (les uns en dessous des autres).
       gap: 3rem; // L'espacement entre les boutons est réduit à 2rem.

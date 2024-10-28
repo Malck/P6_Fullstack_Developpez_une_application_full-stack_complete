@@ -7,7 +7,7 @@
   row-gap: 28px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 750px) {
   /* Ajustez cette valeur de breakpoint selon vos besoins */
   .subject-grid {
     grid-template-columns: 1fr;

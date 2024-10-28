@@ -25,7 +25,7 @@
     display: none; // Masquer le contenu de navigation pour les petits écrans et afficher le menu hamburger
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 750px) {
     /* Masquer le contenu de navigation pour les petits écrans et afficher le menu hamburger */
     .navigation-content.desktop {
       display: none;
@@ -50,8 +50,8 @@
   vertical-align: middle;
 }
 
-/* Media query pour les écrans de 500px ou moins */
-@media (max-width: 500px) {
+/* Media query pour les écrans de 750px ou moins */
+@media (max-width: 750px) {
   .login-header {
     height: calc($header-height * 2);
     display: flex;

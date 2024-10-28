@@ -53,14 +53,14 @@
   transition: background-color 0.3s ease; 
 }
 /* Lorsque la largeur de l'écran est supérieure à 500px */
-@media (min-width: 501px) {
+@media (min-width: 751px) {
   .back-icon {
     top: $header-height + 1; 
   }
 }
 
 /* Lorsque la largeur de l'écran est de 500px ou moins */
-@media (max-width: 500px) {
+@media (max-width: 750px) {
   .back-icon {
     top: 0; 
   }

@@ -21,7 +21,7 @@
   gap: 8px; /* espace entre les éléments à l'intérieur du flex container, vous pouvez ajuster selon vos besoins */
 }
 
-@media (max-width: 500px) {
+@media (max-width: 750px) {
   /* Ajustez cette valeur de breakpoint selon vos besoins */
   .article-grid {
     grid-template-columns: 1fr;

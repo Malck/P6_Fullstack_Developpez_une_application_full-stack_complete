@@ -10,7 +10,7 @@
     "comments";
 
   // Spécifiez la largeur et d'autres styles pour la carte selon vos besoins
-  //   width: 500px;
+  //   width: 750px;
   min-width: 650px;
   margin: 0 auto;
   //   border: 1px solid #e0e0e0;
@@ -75,15 +75,15 @@
   font-size: $back-arrow-font-size; /* Ajustez cette valeur selon la taille souhaitée */
 }
 
-/* Lorsque la largeur de l'écran est de 500px ou moins */
-@media (max-width: 500px) {
+/* Lorsque la largeur de l'écran est de 750px ou moins */
+@media (max-width: 750px) {
   .back-icon {
     //top: $header-height; // Positionne le lien au-dessus du header
     margin-left: 30px; // Décale le titre légèrement à droite
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 750px) {
   .mat-card-title {
     margin-left: 50px; // Décale le titre légèrement à droite
   }

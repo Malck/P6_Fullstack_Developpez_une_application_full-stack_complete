@@ -49,7 +49,7 @@ mat-list {
   min-height: 0;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 750px) {
   .comment-list {
     flex-direction: column-reverse; /* Inverse l'ordre des éléments */
     align-items: stretch; /* Étend les éléments pour prendre toute la largeur disponible */

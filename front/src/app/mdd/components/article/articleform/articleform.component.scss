@@ -26,7 +26,7 @@
   max-width: 250px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 750px) {
   .article-form-container {
     //width: 300px;
     margin-top: 20px; /* ou la valeur que vous souhaitez */
@@ -47,8 +47,8 @@ textarea {
   font-size: $back-arrow-font-size; /* Ajustez cette valeur selon la taille souhaitée */
 }
 
-/* Lorsque la largeur de l'écran est de 500px ou moins */
-@media (max-width: 500px) {
+/* Lorsque la largeur de l'écran est de 750px ou moins */
+@media (max-width: 750px) {
   .back-icon {
     top: $header-height; // Positionne le lien au-dessus du header
     left: 20px;

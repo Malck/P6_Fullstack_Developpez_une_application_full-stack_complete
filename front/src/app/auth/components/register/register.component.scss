@@ -46,15 +46,15 @@
   z-index: 10; 
 }
 
-/* Lorsque la largeur de l'écran est supérieure à 500px */
+/* Lorsque la largeur de l'écran est supérieure à 750px */
 @media (min-width: 501px) {
   .back-icon {
     top: $header-height + 1; 
   }
 }
 
-/* Lorsque la largeur de l'écran est de 500px ou moins */
-@media (max-width: 500px) {
+/* Lorsque la largeur de l'écran est de 750px ou moins */
+@media (max-width: 750px) {
   .back-icon {
     top: 0; 
   }

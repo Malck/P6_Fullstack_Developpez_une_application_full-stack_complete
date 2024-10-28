@@ -35,7 +35,7 @@ mat-card-title {
   gap: 20px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 750px) {
   /* Ajustez cette valeur de breakpoint selon vos besoins */
   .subscription-grid {
     grid-template-columns: 1fr;
